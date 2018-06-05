@@ -58,6 +58,7 @@ def openManager(titlename,name,itemName):
             if (name == u'配置'):
                 c = MenuItemControl(searchFromControl=levelWindow, Name=u'配置')
                 c.Click()
+                time.sleep(1)
                 configWindow = MenuControl(searchFromControl="", LocalizedControlType=u'菜单')
                 if (itemName == u'行情代理' or itemName == u'用户管理'):
                     configWindow.MenuItemControl(searchDepth=1, Name=itemName).Click()
@@ -76,39 +77,70 @@ def openManager(titlename,name,itemName):
         return False
 
 
+def getButton_Click(fq,index):
+    buttonIndex = 1
+    # button = ButtonControl(searchFromControl=fq, foundIndex=buttonIndex, LocalizedControlType=u"按钮")
+    # while (button.Exists()):
+    #     button.MoveCursorToMyCenter()
+    #     print(button)
+    #     buttonIndex += 1
+    #     button = ButtonControl(searchFromControl=fq, foundIndex=buttonIndex, LocalizedControlType=u"按钮")
 
-#行情管理
+    button= ButtonControl(searchFromControl=fq, foundIndex=index, LocalizedControlType=u"按钮")
+    button.MoveCursorToMyCenter()
+    button.Click()
+    time.sleep(2)
+
+#行情管理 菜单打开--关闭
 def hqConfig():
 
     hqWindow=getWindowTitle(u'行情代理')
     print(hqWindow)
-    buttonIndex=1
-    button=ButtonControl(searchFromControl=hqWindow,foundIndex=buttonIndex,LocalizedControlType=u"按钮")
-    while(button.Exists()):
-            button.MoveCursorToMyCenter()
-            print(button)
-            buttonIndex+=1
-            button = ButtonControl(searchFromControl=hqWindow, foundIndex=buttonIndex, LocalizedControlType=u"按钮")
 
-    add1=ButtonControl(searchFromControl=hqWindow, foundIndex=3, LocalizedControlType=u"按钮")
-    add1.MoveCursorToMyCenter()
-    add1.Click()
+    getButton_Click(hqWindow,3)
 
-#用户管理
+
+
+#用户管理  增加用户--关闭--保存--yes--关闭
 def userConfig():
-   pass
+   userWindow=getWindowTitle(u'用户管理')
+   print(userWindow)
 
+   #增加用户按钮
+   getButton_Click(userWindow,5)
+
+   addUserWindow=getWindowTitle(u'增加用户')
+
+   #保存
+   getButton_Click(addUserWindow,4)
+
+   warnWindow=getWindowTitle(u'警告')
+   getButton_Click(warnWindow,2)
+
+   getButton_Click(addUserWindow,3)
+   getButton_Click(userWindow,3)
+
+
+def hqAction():
+    hqWindow = getWindowTitle(u'行情代理')
+
+    pass
 
 if __name__ == '__main__':
-    startApp('D:\hqzf\L2Sever\Monitor\Level2Sever.exe')
-    getMemCpu('Level2Server.exe')
-    count = 0
-    while (True):
-        openManager(u'Level2-Server', u'配置', u'行情代理')
-        hqConfig()
-        getMemCpu('Level2Server.exe')
-        count += 1
-        time.sleep(5)
-        logger.info(format('已循环多少次%s' % str(count)))
+    # startApp('D:\hqzf\L2Sever\Monitor\Level2Sever.exe')
+    # getMemCpu('Level2Server.exe')
+    # count = 0
+    # while (True):
+    #     openManager(u'Level2-Server', u'配置', u'行情代理')
+    #     hqConfig()
+    #     getMemCpu('Level2Server.exe')
+    #     count += 1
+    #     time.sleep(5)
+    #     logger.info(format('已循环多少次%s' % str(count)))
+
+    openManager(u'Level2-Server', u'配置', u'用户管理')
+    userConfig()
+
+
 
 
