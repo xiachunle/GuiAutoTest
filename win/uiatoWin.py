@@ -78,18 +78,21 @@ def openManager(titlename,name,itemName):
 
 
 def getButton_Click(fq,index):
-    buttonIndex = 1
-    # button = ButtonControl(searchFromControl=fq, foundIndex=buttonIndex, LocalizedControlType=u"按钮")
-    # while (button.Exists()):
-    #     button.MoveCursorToMyCenter()
-    #     print(button)
-    #     buttonIndex += 1
-    #     button = ButtonControl(searchFromControl=fq, foundIndex=buttonIndex, LocalizedControlType=u"按钮")
-
     button= ButtonControl(searchFromControl=fq, foundIndex=index, LocalizedControlType=u"按钮")
     button.MoveCursorToMyCenter()
     button.Click()
     time.sleep(2)
+
+
+def getButtons(fq):
+    buttonIndex = 1
+    button = ButtonControl(searchFromControl=fq, foundIndex=buttonIndex, LocalizedControlType=u"按钮")
+    while (button.Exists()):
+        button.MoveCursorToMyCenter()
+        print(button)
+        buttonIndex += 1
+        button = ButtonControl(searchFromControl=fq, foundIndex=buttonIndex, LocalizedControlType=u"按钮")
+
 
 #行情管理 菜单打开--关闭
 def hqConfig():
@@ -120,11 +123,28 @@ def userConfig():
    getButton_Click(addUserWindow,3)
    getButton_Click(userWindow,3)
 
-
+#点增加   然后保存   -> yes  ->关闭增加行情源   ->点增加深圳->同样保存，然后关掉
 def hqAction():
     hqWindow = getWindowTitle(u'行情代理')
 
-    pass
+    getButton_Click(hqWindow,4)
+
+    shHqWinow=getWindowTitle(u'增加上海行情源')
+
+    getButton_Click(shHqWinow,4)
+
+    warningWindow=getWindowTitle(u'warning')
+
+    getButton_Click(warningWindow,2)
+
+    getButton_Click(shHqWinow,3)
+
+    getButton_Click(hqWindow,3)
+
+
+
+
+
 
 if __name__ == '__main__':
     # startApp('D:\hqzf\L2Sever\Monitor\Level2Sever.exe')
@@ -138,8 +158,8 @@ if __name__ == '__main__':
     #     time.sleep(5)
     #     logger.info(format('已循环多少次%s' % str(count)))
 
-    openManager(u'Level2-Server', u'配置', u'用户管理')
-    userConfig()
+    openManager(u'Level2-Server', u'配置', u'行情代理')
+    hqAction()
 
 
 
