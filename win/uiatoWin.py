@@ -13,7 +13,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 fn = logging.FileHandler('hq.log',mode='w')
 
-formatter=logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+formatter=logging.Formatter("%(asctime)s =====%(levelname)s======%(message)s")
 fn.setFormatter(formatter)
 logger.addHandler(fn)
 def  startApp(path):
@@ -34,10 +34,10 @@ def getMemCpu(name):
         p = psutil.Process(pid)
 
         if p.name() == name:
-            line = format("%s_mem:%s" % (p.name(), psutil.Process(pid).memory_info().rss))
-    logger.info("=============")
-    logger.info(line)
-    logger.info("=============")
+            line = format("%s的mem是:%s" % (p.name(), psutil.Process(pid).memory_info().rss))
+
+    return line
+
 
 
 def  getWindowTitle(titlename):
@@ -147,19 +147,21 @@ def hqAction():
 
 
 if __name__ == '__main__':
-    # startApp('D:\hqzf\L2Sever\Monitor\Level2Sever.exe')
-    # getMemCpu('Level2Server.exe')
-    # count = 0
-    # while (True):
-    #     openManager(u'Level2-Server', u'配置', u'行情代理')
-    #     hqConfig()
-    #     getMemCpu('Level2Server.exe')
-    #     count += 1
-    #     time.sleep(5)
-    #     logger.info(format('已循环多少次%s' % str(count)))
+    startApp('D:\hqzf\L2Sever\Monitor\Level2Sever.exe')
+    l=str(getMemCpu('Level2Sever.exe'))
+    logger.info(str('开始%s'%str(l)))
+    count = 1
+    while(True):
+        openManager(u'Level2-Server', u'配置', u'行情代理')
+        hqAction()
+        time.sleep(1)
+        openManager(u'Level2-Server', u'配置', u'用户管理')
+        userConfig()
+        time.sleep(1)
+        e = getMemCpu('Level2Sever.exe')
+        logger.info(str('已循环次数%s,此时%s' % (str(count), str(e))))
+        count += 1
 
-    openManager(u'Level2-Server', u'配置', u'行情代理')
-    hqAction()
 
 
 
